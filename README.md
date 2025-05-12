@@ -30,7 +30,7 @@ Add the following NuGet packages:
 > [!Note]
 > We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our source code:
 >
-> v24.2.6+ | **9.3.0-preview.1.25161.3**
+> v25.1.2+ | **9.4.3-preview.1.25230.7**
 >
 > We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [Microsoft.Extensions.AI.Abstractions NuGet Package Version Upgrade in v24.2.6](https://community.devexpress.com/blogs/news/archive/2025/03/12/important-announcement-microsoft-extensions-ai-abstractions-nuget-package-version-upgrade.aspx).
 
@@ -84,48 +84,32 @@ var settings = builder.Configuration.GetSection("AISettings").Get<AISettings>();
 
 IChatClient chatClient = new AzureOpenAIClient(
     new Uri(settings.AzureOpenAIEndpoint),
-    new System.ClientModel.ApiKeyCredential(settings.AzureOpenAIKey)).AsChatClient(settings.DeploymentName);
+    new System.ClientModel.ApiKeyCredential(settings.AzureOpenAIKey)).GetChatClient(settings.DeploymentName).AsIChatClient();
 
-builder.Services..AddSingleton(chatClient);
+builder.Services.AddSingleton(chatClient);
 builder.Services.AddDevExpressAI((config) => {
     config.AddWebReportingAIIntegration(cfg =>
-        cfg.SummarizationMode = SummarizationMode.Abstractive);
+        cfg.AddSummarization(summarizeOptions =>
+            summarizeOptions.SetSummarizationMode(SummarizationMode.Abstractive))
+        .AddTranslation(transateOptions =>
+                transateOptions.SetLanguages(new List<LanguageInfo> {
+                        new LanguageInfo { Text = "English", Id = "En" },
+                        new LanguageInfo { Text = "German", Id = "De" },
+                        new LanguageInfo { Text = "Spanish", Id = "Es" }
+                    })
+                    .EnableTranslation())
+        );
 });
 
 var app = builder.Build();
 ```
 
-### Enable the DevExpress AI-powered Extension on the Client
-
-Open `DocumentViewer.cshtml` and create a JavaScript function that enables AI services and populates a language list. Call this function on the Document Viewer's [OnInitializing](https://docs.devexpress.com/XtraReports/DevExpress.AspNetCore.Reporting.WebDocumentViewer.WebDocumentViewerClientSideEventsBuilderBase-2.OnInitializing(System.String)) event:
-
-```js
-<script>
-    function OnInitializing(e, s) {
-        DevExpress.Reporting.Viewer.Settings.AIServicesEnabled(true);
-        DevExpress.Reporting.Viewer.Settings.AILanguages([
-            { key: 'en', text: 'English' },
-            { key: 'es', text: 'Spanish' },
-            { key: 'de', text: 'German' }
-        ]);
-    }
-</script>
-
-@{
-    var viewerRender = Html.DevExpress().WebDocumentViewer("DocumentViewer")
-        .ClientSideEvents((configure) => { configure.OnInitializing("OnInitializing"); })
-        .Height("100%")
-        .Bind(Model);
-    @viewerRender.RenderHtml()
-}
-```
 
 ## Files to Review
 
 - [Program.cs](./CS/JSDocumentViewer/Program.cs)
 - [AISettings.cs](./CS/JSDocumentViewer/Models/AISettings.cs)
 - [appsettings.json](./CS/JSDocumentViewer/appsettings.json)
-- [DocumentViewer.cshtml](./CS/JSDocumentViewer/Views/Home/DocumentViewer.cshtml)
 
 ## Documentation
 

@@ -1,5 +1,6 @@
 using Azure.AI.OpenAI;
 using DevExpress.AIIntegration;
+using DevExpress.AIIntegration.Reporting.Common.Models;
 using DevExpress.AspNetCore;
 using DevExpress.AspNetCore.Reporting;
 using DevExpress.Security.Resources;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,12 +41,21 @@ var settings = builder.Configuration.GetSection("AISettings").Get<AISettings>();
 
 IChatClient chatClient = new AzureOpenAIClient(
     new Uri(settings.AzureOpenAIEndpoint),
-    new System.ClientModel.ApiKeyCredential(settings.AzureOpenAIKey)).AsChatClient(settings.DeploymentName);
+    new System.ClientModel.ApiKeyCredential(settings.AzureOpenAIKey)).GetChatClient(settings.DeploymentName).AsIChatClient();
 
 builder.Services.AddSingleton(chatClient);
 builder.Services.AddDevExpressAI((config) => {
     config.AddWebReportingAIIntegration(cfg =>
-        cfg.SummarizationMode = SummarizationMode.Abstractive);
+        cfg.AddSummarization(summarizeOptions =>
+            summarizeOptions.SetSummarizationMode(SummarizationMode.Abstractive))
+        .AddTranslation(transateOptions =>
+                transateOptions.SetLanguages(new List<LanguageInfo> {
+                        new LanguageInfo { Text = "English", Id = "En" },
+                        new LanguageInfo { Text = "German", Id = "De" },
+                        new LanguageInfo { Text = "Spanish", Id = "Es" }
+                    })
+                    .EnableTranslation())
+        );
 });
 
 builder.Services.AddDbContext<ReportDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("ReportsDataConnectionString")));

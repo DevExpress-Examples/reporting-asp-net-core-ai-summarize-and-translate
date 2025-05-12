@@ -1,19 +1,7 @@
 ﻿@model DevExpress.XtraReports.Web.WebDocumentViewer.WebDocumentViewerModel
 
-<script>
-    function OnInitializing(e, s) {
-        DevExpress.Reporting.Viewer.Settings.AIServicesEnabled(true);
-        DevExpress.Reporting.Viewer.Settings.AILanguages([
-            { key: 'en', text: 'English' },
-            { key: 'es', text: 'Spanish' },
-            { key: 'de', text: 'German' }
-        ]);
-    }
-</script>
-
 @{
     var viewerRender = Html.DevExpress().WebDocumentViewer("DocumentViewer")
-        .ClientSideEvents((configure) => { configure.OnInitializing("OnInitializing"); })
         .Height("100%")
         .Bind(Model);
     @viewerRender.RenderHtml()
