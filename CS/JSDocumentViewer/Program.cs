@@ -46,15 +46,13 @@ IChatClient chatClient = new AzureOpenAIClient(
 builder.Services.AddSingleton(chatClient);
 builder.Services.AddDevExpressAI((config) => {
     config.AddWebReportingAIIntegration(cfg =>
-        cfg.AddSummarization(summarizeOptions =>
-            summarizeOptions.SetSummarizationMode(SummarizationMode.Abstractive))
-        .AddTranslation(transateOptions =>
-                transateOptions.SetLanguages(new List<LanguageInfo> {
-                        new LanguageInfo { Text = "English", Id = "En" },
-                        new LanguageInfo { Text = "German", Id = "De" },
-                        new LanguageInfo { Text = "Spanish", Id = "Es" }
-                    })
-                    .EnableTranslation())
+        cfg.AddSummarization(summarizeOptions => summarizeOptions.SetSummarizationMode(SummarizationMode.Abstractive))
+        .AddTranslation(translateOptions =>
+            translateOptions.SetLanguages(new List<LanguageInfo> {
+                new LanguageInfo { Text = "German", Id = "de-DE" },
+                new LanguageInfo { Text = "Spanish", Id = "es-ES" }
+            })
+                .EnableTranslation().EnableInlineTranslation())
         );
 });
 

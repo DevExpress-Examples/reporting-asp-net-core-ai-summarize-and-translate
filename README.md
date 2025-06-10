@@ -6,12 +6,13 @@
 <!-- default badges end -->
 # Reporting for ASP.NET Core -  Summarize and Translate DevExpress Reports Using Azure OpenAI
 
-This example adds AI-powered summarize/translate capabilities to the DevExpress JavaScript-based Document Viewer. These enterprise-ready features are available within the user interface via two buttons designed to access the document and process report content as follows: 
+This example adds AI-powered summarize/translate capabilities to the DevExpress Web Document Viewer. The following capabilities are available: 
 
 - **Summarize**: Uses generative AI to summarize report content and displays core insights associated with this report. 
-- **Translate**: Uses AI services to translate report content to a different language. 
+- **Translate**: Uses AI services to translate report content to another language. 
+- **Translate Inline**: Uses AI services to translate report content to another language and displays the translation directly within the previewed document. You can export or print the translated document.
 
-These actions are also available in context menu when you select report content. Note the AI Operations icon that floats next to the report page. Users can click it to invoke the context menu.
+These actions are available in the AI-powered Quick Actions menu when you select report content. Note the AI Operations icon that floats next to the report page. Users can click it to invoke the context menu. The Summarize and Translate actions are also available in the **AI Operations** tab.
 
 The following is an image of the application interface. As you can see, users can process the entire document, individual pages, or selected content. 
 
@@ -23,19 +24,20 @@ The following is an image of the application interface. As you can see, users ca
 
 Add the following NuGet packages:
 
-- `DevExpress.AIIntegration.Blazor.Reporting.Viewer`
+- `DevExpress.AIIntegration.AspNetCore.Reporting`
 - `DevExpress.Drawing.Skia` (if you use a non-Windows environment)
-- `Microsoft.Extensions.AI.OpenAI`, `Azure.AI.OpenAI`, `Azure.Identity` or `Microsoft.Extensions.AI.Ollama` based on your AI service preferences. This project uses Azure OpenAI. The remainder of this document describes steps related to this package.
+- `Microsoft.Extensions.AI.OpenAI`, `Azure.AI.OpenAI`, `Azure.Identity` or `OllamaSharp` based on your AI service preferences. This project uses Azure OpenAI. The remainder of this document describes steps related to this package.
 
 > [!Note]
 > We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our source code:
 >
-> v25.1.2+ | **9.4.3-preview.1.25230.7**
+> - Microsoft.Extensions.AI.Abstractions: **9.5.0**
+> - Microsoft.Extensions.AI: **9.5.0**
+> - Microsoft.Extensions.AI.OpenAI: **9.5.0-preview.1.25265.7**
 >
-> We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [Microsoft.Extensions.AI.Abstractions NuGet Package Version Upgrade in v24.2.6](https://community.devexpress.com/blogs/news/archive/2025/03/12/important-announcement-microsoft-extensions-ai-abstractions-nuget-package-version-upgrade.aspx).
+> We do not guarantee compatibility or correct operation with higher versions.
 
-For the list of supported AI services and the corresponding prerequisites, refer to *Supported AI Services* in the following help topic: [AI-powered Extensions for DevExpress Reporting](https://docs.devexpress.com/XtraReports/405211/ai-powered-functionality/ai-for-devexpress-reporting#supported-ai-services
-). 
+For the list of supported AI services and the corresponding prerequisites, refer to *Supported AI Services* in the following help topic: [AI-powered Extensions for DevExpress Reporting](https://docs.devexpress.com/XtraReports/405211/ai-powered-functionality/ai-for-devexpress-reporting#supported-ai-services). 
 
 ### Add Personal Keys
 
@@ -91,13 +93,12 @@ builder.Services.AddDevExpressAI((config) => {
     config.AddWebReportingAIIntegration(cfg =>
         cfg.AddSummarization(summarizeOptions =>
             summarizeOptions.SetSummarizationMode(SummarizationMode.Abstractive))
-        .AddTranslation(transateOptions =>
-                transateOptions.SetLanguages(new List<LanguageInfo> {
-                        new LanguageInfo { Text = "English", Id = "En" },
-                        new LanguageInfo { Text = "German", Id = "De" },
-                        new LanguageInfo { Text = "Spanish", Id = "Es" }
+        .AddTranslation(translateOptions =>
+                translateOptions.SetLanguages(new List<LanguageInfo> {
+                        new LanguageInfo { Text = "German", Id = "de-DE" },
+                        new LanguageInfo { Text = "Spanish", Id = "es-ES" }
                     })
-                    .EnableTranslation())
+                    .EnableTranslation().EnableInlineTranslation)
         );
 });
 
