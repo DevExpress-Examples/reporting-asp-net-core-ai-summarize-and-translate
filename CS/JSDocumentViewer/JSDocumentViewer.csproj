@@ -47,12 +47,12 @@
     <Exec Command="npm install" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.1" />
-    <PackageReference Include="DevExpress.AIIntegration.AspNetCore.Reporting" Version="24.2.6" />
-    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="24.2.6" />
-    <PackageReference Include="DevExpress.Drawing.Skia" Version="24.2.6" />
-    <PackageReference Include="Microsoft.Extensions.AI" Version="9.3.0-preview.1.25161.3" />
-    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.3.0-preview.1.25161.3" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
+    <PackageReference Include="DevExpress.AIIntegration.AspNetCore.Reporting" Version="24.2.*-*" />
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="24.2.*-*" />
+    <PackageReference Include="DevExpress.Drawing.Skia" Version="24.2.*-*" />
+    <PackageReference Include="Microsoft.Extensions.AI" Version="9.5.0" />
+    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.5.0-preview.1.25265.7" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
