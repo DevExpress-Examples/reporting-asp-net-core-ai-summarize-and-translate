@@ -23,7 +23,7 @@ The following is an image of the application interface. As you can see, users ca
 
 Add the following NuGet packages:
 
-- `DevExpress.AIIntegration.Blazor.Reporting.Viewer`
+- `DevExpress.AIIntegration.AspNetCore.Reporting`
 - `DevExpress.Drawing.Skia` (if you use a non-Windows environment)
 - `Microsoft.Extensions.AI.OpenAI`, `Azure.AI.OpenAI`, `Azure.Identity` or `OllamaSharp` based on your AI service preferences. This project uses Azure OpenAI. The remainder of this document describes steps related to this package.
 
