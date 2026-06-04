@@ -31,9 +31,8 @@ Add the following NuGet packages:
 > [!Note]
 > We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our source code:
 >
-> - Microsoft.Extensions.AI.Abstractions: **9.7.1**
-> - Microsoft.Extensions.AI: **9.7.1**
-> - Microsoft.Extensions.AI.OpenAI: **9.7.1-preview.1.25365.4**
+> - Microsoft.Extensions.AI: **10.5.1**
+> - Microsoft.Extensions.AI.OpenAI: **10.5.1**
 >
 > We do not guarantee compatibility or correct operation with higher versions.
 
@@ -46,11 +45,11 @@ For the list of supported AI services and the corresponding prerequisites, refer
 
 To use AI-based Summarize and Translate functionality in your application, you must create an Azure OpenAI resource in the Azure portal. Refer to the following help topic for additional information/guidance: [Microsoft - Create and deploy an Azure OpenAI Service resource](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource?pivots=web-portal).
 
-Once you obtain a private endpoint and an API key, open [appsettings.json](./CS/JSDocumentViewer/appsettings.json) and specify appropriate `DeploymentName`, `AzureOpenAIKey`, and `AzureOpenAIEndpoint` values. Note that `DeploymentName` is set to `GPT4o`, but you can specify a different model: 
+Once you obtain a private endpoint and an API key, open [appsettings.json](./CS/JSDocumentViewer/appsettings.json) and specify appropriate `DeploymentName`, `AzureOpenAIKey`, and `AzureOpenAIEndpoint` values: 
 
 ```json
 "AISettings": {
-    "DeploymentName": "GPT4o",
+    "DeploymentName": "",
     "AzureOpenAIKey": "",
     "AzureOpenAIEndpoint": ""
 }
